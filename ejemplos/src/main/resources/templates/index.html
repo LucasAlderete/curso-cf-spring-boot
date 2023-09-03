@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title th:text="${titulo}"></title>
+</head>
+
+<body>
+	<h1 th:text="${saludo}"></h1>
+	<div th:if="${show}">
+		Contenido del div
+	</div>
+
+	<div th:if="${series != null}">
+		Mis Series favoritas:
+		<ul th:each="serie : ${series}">
+			<li th:text="${serie}"></li>
+		</ul>
+	</div>
+
+</body>
+
+</html>

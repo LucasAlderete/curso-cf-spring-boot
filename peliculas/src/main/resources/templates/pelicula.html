@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{layouts/head :: head}">
+</head>
+
+<body>
+	<header th:insert="~{layouts/header :: header}">
+
+	</header>
+	<div class="container">
+		<form th:action="@{/pelicula}" th:object="${pelicula}" method="post" class="col-md-8 offset-md-2" enctype="multipart/form-data">
+
+			<h2 th:text="${titulo}" class="py-4"></h2>
+			<div class="row mb-3">
+				<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="nombre" th:field="*{nombre}">
+					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label for="fecha_estreno" class="col-sm-2 col-form-label">Fecha de Estreno</label>
+				<div class="col-sm-10">
+					<input type="date" class="form-control" id="fecha_estreno" th:field="*{fechaEstreno}">
+					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('fechaEstreno')}" th:errors="*{fechaEstreno}">
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label for="genero" class="col-sm-2 col-form-label">Género</label>
+				<div class="col-sm-10">
+					<select class="form-select" th:field="*{genero}">
+						<option th:each="item : ${generos}" th:text="${item.nombre}" th:value="${item.id}">
+						</option>
+					</select>
+					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}">
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label for="protagonistas" class="col-sm-2 col-form-label">Actor</label>
+				<div class="col-sm-10">
+					<select class="form-select" th:field="*{protagonistas}" onchange="actorSelected(this)">
+						<option th:text="'Seleccionar actor'" th:value="0"></option>
+						<option th:each="actor : ${actores}" th:text="${actor.nombre}" th:value="${actor.id}" th:data-url="${actor.urlImagen}">
+						</option>
+					</select>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label for="imagen" class="col-sm-2 col-form-label">Imagen</label>
+				<div class="col-sm-10">
+					<div id="vista_previa" class="d-none">
+						
+					</div>
+					<input type="file" id="archivo" name="archivo" onchange="previsualizar()">
+				</div>
+			</div>
+			<input id="ids" name="ids" type="hidden" th:value="${ids}" >
+			<input id="id" name="id" type="hidden" th:field="*{id}">
+			<input id="imagen" name="imagen" type="hidden" th:field="*{imagen}">
+			<div id="protagonistas_container" class="row">
+				
+			</div>
+			<button type="submit" class="btn btn-primary float-end">Guardar</button>
+		</form>
+	</div>
+</body>
+<script>
+	$(function(){
+		let ids = $("#ids").val();
+		let arr = ids.split(",");
+		$("#ids").val("");
+		
+		arr.forEach(id => {
+			$("#protagonistas").val(id);
+			actorSelected($("#protagonistas")[0]);
+		})
+	})
+</script>
+
+</html>

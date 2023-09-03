@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{layouts/head :: head}">
+</head>
+
+<body>
+	<header th:insert="~{layouts/header :: header}">
+
+	</header>
+	<div class="container">
+		<h1 th:text="${titulo}"></h1>
+		
+		<div class="row row-cols-1 row-cols-md-6 g-4">
+			<div class="col" th:each="pelicula : ${peliculas}">
+				<div class="card">
+					<img th:src="@{${'/archivo?n='} + ${pelicula.imagen == null ? '_default.jpg' : pelicula.imagen } }"
+						class="card-img-top" alt="foto">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${pelicula.nombre}"></h5>
+						<p class="card-text" th:text="${pelicula.genero.nombre}"></p>
+						<div class="catalogo-actor-container" th:each="protagonista : ${pelicula.protagonistas}">
+							<div class="catalogo-actor-imagen"
+								th:style="'background-image:url(' + ${protagonista.urlImagen} + ')'">
+
+							</div>
+							<div class="catalogo-actor-texto" th:text="${protagonista.nombre}">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<nav aria-label="Page navigation example" class="mt-4">
+			<ul class="pagination justify-content-center">
+				<li class="page-item" th:each="pagina : ${paginas}" th:classappend="${pagina == actual ? 'active' : ''}">
+					<a class="page-link" th:href="@{'/home?pagina=' + ${pagina -1}}" th:text="${pagina}"></a>
+				</li>
+			</ul>
+		</nav>
+
+	</div>
+</body>
+
+</html>
